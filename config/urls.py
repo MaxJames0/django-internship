@@ -23,6 +23,7 @@ from config import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blogs/', include('blogs.urls') , name='blog'),
+    path('dashboard/', include('dashboard.urls') , name='dashboard'),
     path('' , include('core.urls') , name='core'),
     
 ]
