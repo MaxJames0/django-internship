@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from .utils import image_upload_blog
 
 # Create your models here.
 
@@ -24,7 +25,7 @@ class Blog(models.Model):
     category = models.ForeignKey(BlogCategory, blank=True , null=True , on_delete=models.CASCADE , related_name='category' , verbose_name='دسته بندی')
     user = models.ForeignKey(Users , on_delete=models.CASCADE , verbose_name='کاربر')
     content = models.TextField(verbose_name='توضیحات کامل')
-    img = models.ImageField(upload_to='./uploads')
+    img = models.ImageField(upload_to=image_upload_blog)
     status = models.BooleanField(default=True , verbose_name='وضعیت نمایش')
     created_at = models.DateTimeField(auto_now_add=True , verbose_name='ساخته شده در')
     updated_at = models.DateTimeField(auto_now=True , verbose_name='بروز شده در')
