@@ -19,4 +19,7 @@ class BlogDetail(DetailView):
     template_name = './blogs/detail.html'
     context_object_name = 'blog'
     
-    
+class BlogDashboardList(ListView):
+    template_name = './blogs/blog_list_dashboard.html'
+    model = Blog
+    context_object_name = 'blogs'

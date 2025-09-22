@@ -24,7 +24,15 @@
     <div class="body-wrapper">
       <!--  Header Start -->
       <header class="app-header">
-    {% block content_admin %}{% endblock content_admin %}
+    <div class="body-wrapper-inner">
+        <div class="container-fluid">
+          <!--  Row 1 -->
+          <div class="row">
+      {% block content_admin %}{% endblock content_admin %}
+    </div>
+    </div>
+    </div>
+    
     </div>
   </div>
   {% include "admin/_footer.html" %}
