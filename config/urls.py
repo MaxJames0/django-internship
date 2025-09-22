@@ -25,6 +25,7 @@ urlpatterns = [
     path('blogs/', include('blogs.urls') , name='blog'),
     path('dashboard/', include('dashboard.urls') , name='dashboard'),
     path('' , include('core.urls') , name='core'),
+    path('accounts/', include('accounts.urls') , name='accounts'),
     
 ]
 

@@ -34,16 +34,19 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     #"admin_interface",
     "colorfield",
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
 # My apps
     'blogs',
     'core',
     'dashboard',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -58,13 +61,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
+        'APP_DIRS': True,  # this, gives django the permission to check the templates inside apps (very important!) 
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -139,3 +144,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "static_cdn", "media_root")
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'accounts.User'
