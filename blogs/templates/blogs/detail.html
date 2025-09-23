@@ -1,18 +1,16 @@
 {% extends "_base.html" %}
 
 {% block content %}
-
 <section class="page-title bg-1">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
         <div class="block text-center">
-          <span class="text-white">News details</span>
-          <h1 class="text-capitalize mb-4 text-lg">Blog Single</h1>
+          <h1 class="text-capitalize mb-4 text-lg">{{blog.title}}</h1>
           <ul class="list-inline">
-            <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
+            <li class="list-inline-item"><a href="{% url "core:home" %}" class="text-white">Home</a></li>
             <li class="list-inline-item"><span class="text-white">/</span></li>
-            <li class="list-inline-item"><a href="#" class="text-white-50">News details</a></li>
+            <li class="list-inline-item"><a href="#" class="text-white-50">{{blog.title}}</a></li>
           </ul>
         </div>
       </div>
@@ -33,28 +31,20 @@
 
 			<div class="blog-item-content bg-white p-5">
 				<div class="blog-item-meta bg-gray py-1 px-2">
-					<span class="text-muted text-capitalize mr-3"><i class="ti-pencil-alt mr-2"></i>Creativity</span>
+					<span class="text-muted text-capitalize mr-3"><i class="ti-pencil-alt mr-2"></i>{{blog.user}}</span>
 					<span class="text-muted text-capitalize mr-3"><i class="ti-comment mr-2"></i>5 Comments</span>
-					<span class="text-black text-capitalize mr-3"><i class="ti-time mr-1"></i> 28th January</span>
+					<span class="text-black text-capitalize mr-3"><i class="ti-time mr-1"></i> {{blog.jcreated_at}}</span>
 				</div> 
 
-				<h2 class="mt-3 mb-4"><a href="blog-single.html">Improve design with typography?</a></h2>
-				<p class="lead mb-4">Non illo quas blanditiis repellendus laboriosam minima animi. Consectetur accusantium pariatur repudiandae!</p>
-
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus natus, consectetur? Illum libero vel nihil nisi quae, voluptatem, sapiente necessitatibus distinctio voluptates, iusto qui. Laboriosam autem, nam voluptate in beatae.</p>
-
-				<h3 class="quote">A brand for a company is like a reputation for a person. You earn reputation by trying to do hard things well.</h3>
-				
-				<p class="lead mb-4 font-weight-normal text-black">The same is true as we experience the emotional sensation of stress from our first instances of social rejection ridicule. We quickly learn to fear and thus automatically.</p>
-
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste, rerum beatae repellat tenetur incidunt quisquam libero dolores laudantium. Nesciunt quis itaque quidem, voluptatem autem eos animi laborum iusto expedita sapiente.</p>
+				<h2 class="mt-3 mb-4"><a href="blog-single.html">{{blog.title}}</a></h2>
+				<p>{{blog.content}}</p>
 
 				<div class="tag-option mt-5 clearfix">
 				    <ul class="float-left list-inline"> 
-				    	<li>Tags:</li> 
-				    	<li class="list-inline-item"><a href="#" rel="tag">Advancher</a></li>
-				    	<li class="list-inline-item"><a href="#" rel="tag">Landscape</a></li>
-				    	<li class="list-inline-item"><a href="#" rel="tag">Travel</a></li>
+				    	<li>Category:</li> 
+						{% for cat in blog.category.all %}
+				    	<li class="list-inline-item"><a href="#" rel="tag">{{cat.name}}</a></li>
+						{% endfor %}
 				   	</ul>        
 
 				    <ul class="float-right list-inline">
@@ -76,8 +66,13 @@
 				<div class="posts-prev-item mb-4 mb-lg-0">
 					<span class="nav-posts-desc text-color">- Previous Post</span>
 					<h6 class="nav-posts-title mt-1">
-						Donec consectetuer ligula <br>vulputate sem tristique.
-					</h6>
+											{% if previous_post %}
+												<a href="{% url 'blog:detail-blog' previous_post.pk  previous_post.slug %}" class="theme-bg">
+													<div class="title-with-link">
+														<span class="intro">پست قبلی: {{ previous_post.title }}</span>
+													</div>
+												</a>
+											{% endif %}					</h6>
 				</div>
 			</a>
 			<div class="border"></div>
@@ -85,78 +80,63 @@
 				<div class="posts-next-item pt-4 pt-lg-0">
 					<span class="nav-posts-desc text-lg-right text-md-right text-color d-block">- Next Post</span>
 					<h6 class="nav-posts-title mt-1">
-						Ut aliquam sollicitudin leo.
-					</h6>
+											{% if next_post %}
+												<a href="{% url 'blog:detail-blog' next_post.pk  next_post.slug %}" class="theme-bg">
+													<div class="title-with-link">
+														<span class="intro">پست بعدی: {{ next_post.title }}</span>
+													</div>
+												</a>
+											{% endif %}					</h6>
 				</div>
 			</a>
 		</div>
 	</div>
 
-	<div class="col-lg-12 mb-5">
-		<div class="comment-area card border-0 p-5">
-			<h4 class="mb-4">2 Comments</h4>
-			<ul class="comment-tree list-unstyled">
-				<li class="mb-5">
-					<div class="comment-area-box">
-						<img alt="" src="images/blog/test1.jpg" class="img-fluid float-left mr-3 mt-2">
+<div class="col-lg-12 mb-5">
+  <div class="comment-area card border-0 p-5">
+    <h4 class="mb-4">{{ blog.comments.count }} Comment{{ blog.comments.count|pluralize }}</h4>
+    <ul class="comment-tree list-unstyled">
+      {% for comment in blog.comments.all %}
+        <li class="mb-5">
+          <div class="comment-area-box">
+            <img alt="" src="{{ comment.user.profile_pic.url|default:'/static/images/default-avatar.png' }}" 
+                 class="img-fluid float-left mr-3 mt-2" width="60">
 
-						<h5 class="mb-1">Philip W</h5>
-						<span>United Kingdom</span>
+            <h5 class="mb-1">{{ comment.user.get_full_name|default:comment.user.username }}</h5>
+            <span>{{ comment.user.email }}</span>
 
-						<div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">
-							<a href="#"><i class="icofont-reply mr-2 text-muted"></i>Reply |</a>
-							<span class="date-comm">Posted October 7, 2018 </span>
-						</div>
+            <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">
+              <span class="date-comm">Posted {{ comment.created_at|date:"F j, Y" }}</span>
+            </div>
 
-						<div class="comment-content mt-3">
-							<p>Some consultants are employed indirectly by the client via a consultancy staffing company, a company that provides consultants on an agency basis. </p>
-						</div>
-					</div>
-				</li>
+            <div class="comment-content mt-3">
+              <p>{{ comment.content }}</p>
+            </div>
+          </div>
+        </li>
+      {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
 
-				<li>
-					<div class="comment-area-box">
-						<img alt="" src="images/blog/test2.jpg" class="mt-2 img-fluid float-left mr-3">
+<div class="col-lg-12">
+  <form method="post" class="contact-form bg-white rounded p-5">
+    {% csrf_token %}
+    <h4 class="mb-4">Write a comment</h4>
 
-						<h5 class="mb-1">Philip W</h5>
-						<span>United Kingdom</span>
+    {{ form.non_field_errors }}
 
-						<div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">
-							<a href="#"><i class="icofont-reply mr-2 text-muted"></i>Reply |</a>
-							<span class="date-comm">Posted October 7, 2018</span>
-						</div>
+    <div class="form-group">
+      {{ form.content }}
+      {{ form.content.errors }}
+    </div>
 
-						<div class="comment-content mt-3">
-							<p>Some consultants are employed indirectly by the client via a consultancy staffing company, a company that provides consultants on an agency basis. </p>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
+    <button type="submit" class="btn btn-main btn-round-full">Submit Comment</button>
+  </form>
+</div>
 
-	<div class="col-lg-12">
-		<form class="contact-form bg-white rounded p-5" id="comment-form">
-			<h4 class="mb-4">Write a comment</h4>
-			<div class="row">
-				<div class="col-md-6">
-					<div class="form-group">
-						<input class="form-control" type="text" name="name" id="name" placeholder="Name:">
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="form-group">
-						<input class="form-control" type="text" name="mail" id="mail" placeholder="Email:">
-					</div>
-				</div>
-			</div>
-
-
-			<textarea class="form-control mb-3" name="comment" id="comment" cols="30" rows="5" placeholder="Comment"></textarea>
-
-			<input class="btn btn-main btn-round-full" type="submit" name="submit-contact" id="submit_contact" value="Submit Message">
-		</form>
-	</div>
 </div>
             </div>
             <div class="col-lg-4">
@@ -195,30 +175,17 @@
 
 	<div class="sidebar-widget latest-post card border-0 p-4 mb-3">
 		<h5>Latest Posts</h5>
-
+		{% for blog in latest_post %}
         <div class="media border-bottom py-3">
             <a href="#"><img class="mr-4" src="images/blog/bt-3.jpg" alt=""></a>
             <div class="media-body">
-                <h6 class="my-2"><a href="#">Thoughtful living in los Angeles</a></h6>
+                <h6 class="my-2"><a href="#">{{blog.title}}</a></h6>
                 <span class="text-sm text-muted">03 Mar 2018</span>
             </div>
         </div>
+		{% endfor %}
 
-        <div class="media border-bottom py-3">
-            <a href="#"><img class="mr-4" src="images/blog/bt-2.jpg" alt=""></a>
-           <div class="media-body">
-                <h6 class="my-2"><a href="#">Vivamus molestie gravida turpis.</a></h6>
-                <span class="text-sm text-muted">03 Mar 2018</span>
-            </div>
-        </div>
 
-        <div class="media py-3">
-            <a href="#"><img class="mr-4" src="images/blog/bt-1.jpg" alt=""></a>
-            <div class="media-body">
-                <h6 class="my-2"><a href="#">Fusce lobortis lorem at ipsum semper sagittis</a></h6>
-                <span class="text-sm text-muted">03 Mar 2018</span>
-            </div>
-        </div>
 	</div>
 
 	<div class="sidebar-widget bg-white rounded tags p-4 mb-3">
@@ -238,5 +205,4 @@
         </div>
     </div>
 </section>
-
 {% endblock content %}

@@ -14,14 +14,14 @@
              class="rounded-circle mb-3"
              style="width: 120px; height: 120px; object-fit: cover;">
       {% else %}
-        <img src="{% static 'User-round-pic.jpg' %}" 
+        <img src="{% static 'user_1.jpg' %}" 
              alt="Default Avatar" 
              class="rounded-circle mb-3"
              style="width: 120px; height: 120px; object-fit: cover;">
       {% endif %}
 
       <h5 class="card-title">{{ user.first_name }} {{ user.last_name }}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">Email: {{ user.email }}</h6>
+      <h6 class="card-subtitle mb-2 text-muted">{{ user.email }}</h6>
       <p class="card-text">Phone: {{ user.phone_number }}</p>
       {% comment %} <p class="card-text"> {% endcomment %}
         {% comment %} Some quick example text to build on the card title and make up the bulk of the card's content. {% endcomment %}
@@ -31,4 +31,3 @@
   </div>
 </div>
 {% endblock content_admin %}
-

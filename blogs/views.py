@@ -19,6 +19,23 @@ class BlogDetail(DetailView):
     template_name = './blogs/detail.html'
     context_object_name = 'blog'
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        blog = self.get_object()
+
+        next_post = Blog.objects.filter(
+            created_at__gt=blog.created_at, status=True
+        ).order_by('created_at').first()
+
+        previous_post = Blog.objects.filter(
+            created_at__lt=blog.created_at, status=True
+        ).order_by('-created_at').first()
+        
+        context['next_post'] = next_post
+        context['previous_post'] = previous_post
+        return context
+    
+
 class BlogDashboardList(ListView):
     template_name = './blogs/blog_list_dashboard.html'
     model = Blog

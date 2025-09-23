@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from .utils import image_upload_blog
+from extensions.utils import jalali_converter   
 
 # Create your models here.
 
@@ -22,7 +23,7 @@ class Blog(models.Model):
     title = models.CharField(verbose_name='عنوان' , max_length=255)
     slug = models.SlugField(unique = True)
     desc = models.TextField(verbose_name='توضیحات کوتاه')
-    category = models.ForeignKey(BlogCategory, blank=True , null=True , on_delete=models.CASCADE , related_name='category' , verbose_name='دسته بندی')
+    category = models.ManyToManyField(BlogCategory,related_name='category', verbose_name='دسته بندی')
     user = models.ForeignKey(Users , on_delete=models.CASCADE , verbose_name='کاربر')
     content = models.TextField(verbose_name='توضیحات کامل')
     img = models.ImageField(upload_to=image_upload_blog)
@@ -32,5 +33,8 @@ class Blog(models.Model):
     
     def __str__(self):
         return f'{self.title} | {self.user}'
+    
+    def jcreated_at(self):  
+        return jalali_converter(self.created_at)
     
     
