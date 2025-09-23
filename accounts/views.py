@@ -31,4 +31,15 @@ class LogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         return redirect('accounts:login')
+
+class ProfileView(TemplateView, LoginRequiredMixin):
+    template_name = "accounts/profile.html"
+
+class ProfileUpdateView(UpdateView):
+    model = user
+    form_class = ProfileForm
+    template_name = "accounts/edit_profile.html"
+    success_url = reverse_lazy('accounts:profile')
     
+    def get_object(self, queryset=None):
+        return self.request.user

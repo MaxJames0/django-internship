@@ -18,7 +18,19 @@ class RegisterForm(UserCreationForm):
 class LoginForm(AuthenticationForm):
     username = forms.CharField(
         label="Phone Number",
-        widget=forms.TextInput(attrs={"autofocus": True})
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "placeholder": "phonenumber",
+            "autofocus": True
+        })
+    )
+    password = forms.CharField(
+        label = "password",
+        strip=False,
+        widget=forms.PasswordInput(attrs={
+            "class": "form-control",
+            "placeholder": "password"
+        }), 
     )
 
     def clean_username(self):
@@ -28,4 +40,8 @@ class LoginForm(AuthenticationForm):
         if len(username) != 11:
             raise forms.ValidationError("شماره باید 11 رقم باشد")
         return username
-    
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'profile_pic']
