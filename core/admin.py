@@ -7,4 +7,4 @@ admin.site.site_header = "My Shop Admin"
 admin.site.site_title = "My Shop Admin Portal"
 admin.site.index_title = "Welcome to My Shop Admin Portal"
 
-admin.site.register = Contact_us
+admin.site.register(Contact_us)
