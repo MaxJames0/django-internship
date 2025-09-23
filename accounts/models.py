@@ -12,7 +12,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(unique=True, blank=True, null=True)
     phone_number = models.CharField(unique=True, max_length=11)
-    profile_pic = models.ImageField(image_upload_user)
+    profile_pic = models.ImageField(upload_to=image_upload_user, blank=True, null=True)
     birth_date = models.CharField(max_length=150, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

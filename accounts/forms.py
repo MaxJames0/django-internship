@@ -45,3 +45,61 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'profile_pic']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Apply Bootstrap styles + placeholders
+        self.fields['first_name'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Enter your first name'
+        })
+        self.fields['last_name'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Enter your last name'
+        })
+        self.fields['username'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Enter your username'
+        })
+        self.fields['profile_pic'].widget.attrs.update({
+            'class': 'form-control'
+        })
+
+
+class CustomUser(forms.ModelForm):
+    password1 = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+    )
+    password2 = forms.CharField(
+        label="Confirm Password",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+    )
+
+    class Meta:
+        model = User
+        exclude = ['created_at', 'updated_at', 'last_login']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'profile_pic': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'birth_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'YYYY-MM-DD'}),
+            'is_owner': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_superuser': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_staff': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        p1 = cleaned_data.get("password1")
+        p2 = cleaned_data.get("password2")
+
+        if p1 and p2 and p1 != p2:
+            self.add_error("password2", "Passwords do not match!")
+
+        return cleaned_data

@@ -25,13 +25,7 @@
           <thead>
             <tr>
               <th scope="col" class="px-0 text-muted">
-                Title
-              </th>
-              <th scope="col" class="px-0 text-muted">
-                User
-              </th>
-              <th scope="col" class="px-0 text-muted text-end">
-                Category
+                Name
               </th>
               <th scope="col" class="px-0 text-muted text-end">
                 Created At
@@ -45,34 +39,26 @@
             </tr>
           </thead>
           <tbody>
-            {% for blog in blogs %}
+            {% for cat in blog_categories %}
             <tr>
               <td class="px-0">
                 <div class="d-flex align-items-center">
-                  <img src="{{ blog.img.url }}" 
-                       class="rounded-circle object-fit-cover border shadow-sm" 
-                       width="50" height="50" 
-                       alt="{{ blog.title }}">
-                  <div class="ms-3">
-                    <h6 class="mb-0 fw-bolder">{{ blog.title }}</h6>
-                    <span class="text-muted">{{ blog.slug }}</span>
+                  <div>
+                    <h6 class="mb-0 fw-bolder">{{ cat.name }}</h6>  
+                    <span class="text-muted">{{ cat.slug }}</span>
                   </div>
                 </div>
               </td>
-              <td class="px-0">{{ blog.user }}</td>
               <td class="px-0 text-dark fw-medium text-end">
-                {{ blog.category.name }}
+                {{ cat.jcreated_at }}
               </td>
               <td class="px-0 text-dark fw-medium text-end">
-                {{ blog.jcreated_at }}
+                {{ cat.status }}
               </td>
               <td class="px-0 text-dark fw-medium text-end">
-                {{ blog.status }}
-              </td>
-              <td class="px-0 text-dark fw-medium text-end">
-                <a class="btn btn-warning" href="{% url 'blog:update-blog-dashboard' blog.pk %}">Update</a>
+                <a class="btn btn-warning" href="{% url 'blog:update-blog-category-dashboard' cat.pk %}">Update</a>
                 |
-                <a class="btn btn-danger" href="{% url 'blog:delete-blog' blog.pk %}">Delete</a>
+                <a class="btn btn-danger" href="{% url 'blog:delete-blog-category-dashboard' cat.pk %}">Delete</a>
               </td>
             </tr>
             {% endfor %}

@@ -28,3 +28,4 @@ class BlogCategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(BlogCategory, BlogCategoryAdmin)
 admin.site.register(Blog, BlogAdmin)
+admin.site.register(CommentBlog)
